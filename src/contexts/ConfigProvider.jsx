@@ -1,12 +1,13 @@
 import Icon from "../components/Icon";
 
 // MARCA
-export const APP_NAME = "MineGo";
+export const APP_NAME = "WatoncitaMC";
 export const APP_SUBTITLE = "Panel de Bots";
 
 // Servidor de Minecraft administrado
 export const MC_SERVER = {
-  mapUrl: import.meta.env.VITE_MAP_URL ?? "http://35.225.251.194:8080",
+  // Ruta (proxy same-origin) o URL absoluta del mapa squaremap
+  mapBase: import.meta.env.VITE_MAP_PROXY_PATH ?? "/squaremap",
   apiUrl: import.meta.env.VITE_BOT_API_URL ?? "http://localhost:8080",
 };
 
@@ -25,7 +26,7 @@ export const menuSections = [
     title: "Bots",
     permission: null,
     items: [
-      { text: "Dashboard", path: "/bots" },
+      { text: "Dashboard", path: "/dashboard" },
       { text: "Crear bot", path: "/bots/crear" },
     ],
   },
@@ -94,7 +95,7 @@ export const sidebarThemeDark = {
 };
 
 // Logo del sistema
-export const sidebarLogo = "/mc_logo.svg";
+export const sidebarLogo = "/server-icon.png";
 
 // ─── Tokens de diseño UI ──────────────────────────────────────────────────────
 

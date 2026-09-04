@@ -124,7 +124,7 @@ const Configuraciones = () => {
 
           <div className={`space-y-4 border-t ${divider} pt-4`}>
             <InfoRow icon="api" label="API de bots" value={MC_SERVER.apiUrl} mono t={t} />
-            <InfoRow icon="map" label="Mapa interactivo (squaremap)" value={MC_SERVER.mapUrl} mono t={t} />
+            <InfoRow icon="map" label="Mapa interactivo (ruta proxy)" value={MC_SERVER.mapBase} mono t={t} />
             {health?.time && (
               <InfoRow icon="schedule" label="Última respuesta del servicio" value={new Date(health.time).toLocaleString("es-CL")} t={t} />
             )}

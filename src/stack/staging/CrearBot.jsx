@@ -112,7 +112,7 @@ const CrearBot = () => {
         subtitulo="Registra un nuevo bot y conéctalo al servidor"
         icon="person_add"
         actions={
-          <Boton variant="secondary" icon="arrow_back" onClick={() => navigate("/bots")}>
+          <Boton variant="secondary" icon="arrow_back" onClick={() => navigate("/dashboard")}>
             Volver
           </Boton>
         }
@@ -240,7 +240,7 @@ const CrearBot = () => {
           </div>
 
           <div className="flex gap-3 pt-1">
-            <Boton variant="secondary" fullWidth onClick={() => navigate("/bots")} disabled={creating}>
+            <Boton variant="secondary" fullWidth onClick={() => navigate("/dashboard")} disabled={creating}>
               Cancelar
             </Boton>
             <Boton type="submit" variant="success" fullWidth loading={creating} icon="person_add">

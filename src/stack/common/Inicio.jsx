@@ -205,7 +205,7 @@ const Inicio = () => {
               label="Ver bots"
               icon="smart_toy"
               color="blue"
-              onClick={() => navigate("/bots")}
+              onClick={() => navigate("/dashboard")}
             />
             <BotonNav
               label="Crear bot"

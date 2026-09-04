@@ -1,6 +1,6 @@
-# MineGo · Panel de Administración de Bots
+# WatoncitaMC · Panel de Administración de Bots
 
-Frontend para administrar la flota de bots de Minecraft (MineGo Bot API) e
+Frontend para administrar la flota de bots de Minecraft (WatoncitaMC Bot API) e
 integrar el mapa interactivo del servidor ([squaremap](https://github.com/jpenilla/squaremap)).
 
 ## Funcionalidades
@@ -31,9 +31,49 @@ pnpm lint     # eslint
 ## Variables de entorno (`.env`)
 
 ```bash
-VITE_BOT_API_URL=http://localhost:8080        # API de bots (prod: https://tienda.memeuricio.dev)
-VITE_MAP_URL=http://35.225.251.194:8080       # Mapa squaremap del servidor
+VITE_BOT_API_URL=https://tienda.memeuricio.dev  # API de bots (prod)
+VITE_MAP_PROXY_PATH=/squaremap                  # Ruta proxy del mapa squaremap
 ```
+
+## Mapa en producción (proxy same-origin)
+
+El mapa se consume por la ruta `/squaremap` del **mismo dominio del panel**;
+esto evita el bloqueo por CORS (dev) y mixed content (prod HTTPS). El
+reverse proxy debe **quitar el prefijo** y reenviar a `http://35.225.251.194:8080`.
+
+**Nginx**
+
+```nginx
+location /squaremap/ {
+    proxy_pass http://35.225.251.194:8080/;  # la barra final elimina el prefijo
+    proxy_set_header Host $host;
+}
+```
+
+**Traefik (Dokploy) — labels del contenedor/routeador**
+
+```yaml
+- traefik.enable=true
+- traefik.http.routers.squaremap.rule=Host(`mine.memeuricio.dev`) && PathPrefix(`/squaremap`)
+- traefik.http.routers.squaremap.middlewares=squaremap-strip
+- traefik.http.middlewares.squaremap-strip.stripprefix.prefixes=/squaremap
+- traefik.http.services.squaremap.loadbalancer.server.port=8080
+```
+
+**Caddy**
+
+```caddy
+mine.memeuricio.dev {
+    handle_path /squaremap/* {
+        reverse_proxy http://35.225.251.194:8080
+    }
+    # ... resto del panel
+}
+```
+
+Si prefieres consumo directo sin proxy, define `VITE_MAP_PROXY_PATH` con la
+URL absoluta del mapa (requiere que squaremap envíe CORS y que el panel no
+esté en HTTPS).
 
 ## Token de acceso
 

@@ -62,7 +62,7 @@ function AppContent() {
         {/* RUTAS ACCESIBLES POR TODO USUARIO AUTENTICADO */}
         <Route element={<WithSidebar />}>
           <Route path="/" element={<Inicio />} />
-          <Route path="/bots" element={<Bots />} />
+          <Route path="/dashboard" element={<Bots />} />
           <Route path="/bots/crear" element={<CrearBot />} />
           <Route path="/bots/:id" element={<DetalleBot />} />
           <Route path="/mapa" element={<Mapa />} />

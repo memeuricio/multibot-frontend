@@ -7,7 +7,7 @@ import { useTheme } from "../../contexts/ThemeProvider";
 import { uiTokens } from "../../contexts/ConfigProvider";
 
 // API
-import { MAP_URL, getMapSettings, getMapPlayers } from "../../api/mapa.api";
+import { MAP_BASE, getMapSettings, getMapPlayers } from "../../api/mapa.api";
 
 // UI
 import Titulo from "../../UI/Titulo";
@@ -90,7 +90,7 @@ const Mapa = () => {
   };
 
   const mixedContent =
-    window.location.protocol === "https:" && MAP_URL.startsWith("http:");
+    window.location.protocol === "https:" && MAP_BASE.startsWith("http:");
 
   const worldBtn = (w) => {
     const active = world === w.name;
@@ -118,7 +118,7 @@ const Mapa = () => {
         icon="map"
         actions={
           <div className="flex items-center gap-2">
-            <Boton variant="secondary" size="sm" icon="open_in_new" onClick={() => window.open(MAP_URL, "_blank", "noopener")}>
+            <Boton variant="secondary" size="sm" icon="open_in_new" onClick={() => window.open(`${MAP_BASE}/`, "_blank", "noopener")}>
               Abrir pestaña
             </Boton>
             <Boton variant="primary" size="sm" icon="fullscreen" onClick={handleFullscreen}>
@@ -155,7 +155,7 @@ const Mapa = () => {
             {world ? (
               <iframe
                 key={world}
-                src={`${MAP_URL}/?world=${encodeURIComponent(world)}`}
+                src={`${MAP_BASE}/?world=${encodeURIComponent(world)}`}
                 title="Mapa del servidor"
                 className="w-full h-full border-0"
                 allow="fullscreen"

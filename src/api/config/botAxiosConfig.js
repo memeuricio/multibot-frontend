@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// Config de axios para la API de bots (MineGo Bot API).
+// Config de axios para la API de bots (WatoncitaMC Bot API).
 // Autenticación vía header X-API-Key (token plano en localStorage).
 
 const apiUrl = import.meta.env.VITE_BOT_API_URL ?? "http://localhost:8080";

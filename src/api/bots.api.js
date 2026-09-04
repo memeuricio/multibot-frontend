@@ -1,6 +1,6 @@
 import botAxios, { extractError } from "./config/botAxiosConfig";
 
-// API de bots (MineGo Bot API)
+// API de bots (WatoncitaMC Bot API)
 // Todos los errores se lanzan como Error con mensaje legible en español.
 
 export const listBots = async () => {

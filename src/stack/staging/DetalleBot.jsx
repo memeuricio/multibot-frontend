@@ -208,9 +208,9 @@ const DetalleBot = () => {
     setDeleting(true);
     try {
       await deleteBot(id);
-      navigate("/bots");
+      navigate("/dashboard");
     } catch (err) {
-      if (err.status === 404) navigate("/bots");
+      if (err.status === 404) navigate("/dashboard");
       else setLoadError(err.message);
       setShowDeleteModal(false);
     } finally {
@@ -247,7 +247,7 @@ const DetalleBot = () => {
             El bot ya no existe. El servicio de bots se reinició y los bots viven
             en memoria: vuelve a crearlos si los necesitas.
           </p>
-          <Boton variant="primary" icon="arrow_back" onClick={() => navigate("/bots")}>
+          <Boton variant="primary" icon="arrow_back" onClick={() => navigate("/dashboard")}>
             Volver a la lista
           </Boton>
         </Contenedor>

@@ -9,7 +9,7 @@ import { loginBotApi, logoutBotApi, getToken } from "../api/auth.api";
 export const SesionContext = createContext({
   token: null,
   isLoading: false,
-  login: async () => false,
+  login: async () => ({ ok: false }),
   logout: () => {},
 });
 
@@ -32,12 +32,12 @@ export function SesionProvider({ children }) {
   const login = useCallback(async (newToken) => {
     setIsLoading(true);
     try {
-      const ok = await loginBotApi(newToken);
-      if (ok) {
+      const result = await loginBotApi(newToken);
+      if (result.ok) {
         localStorage.setItem("botapi_key", newToken);
         setToken(newToken);
       }
-      return ok;
+      return result; // { ok, status, message }
     } finally {
       setIsLoading(false);
     }

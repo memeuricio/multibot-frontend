@@ -16,7 +16,7 @@ const Loading = ({ mensaje, fullScreen = false }) => {
       {/* Logo */}
       <div className={`mb-10 p-6 rounded-full border ${divider}`}>
         <img
-          src="/mc_logo.svg"
+          src="/server-icon.png"
           alt="Logo"
           className="w-20 h-20 object-contain opacity-80"
         />

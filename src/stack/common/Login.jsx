@@ -1,10 +1,22 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SesionContext } from "../../contexts/SesionProvider";
-import { APP_NAME, APP_SUBTITLE, MC_SERVER } from "../../contexts/ConfigProvider";
+import { APP_NAME, APP_SUBTITLE } from "../../contexts/ConfigProvider";
 import { useTheme } from "../../contexts/ThemeProvider";
 import Icon from "../../components/Icon";
 import SistemaPlanetario from "../../components/SistemaPlanetario";
+
+// Diagnóstico del fallo de login según lo documentado:
+//  401 → token rechazado · 503 → backend sin ADMIN_KEY_HASH · null → sin conexión
+function buildLoginError(result) {
+  if (result.status === 401) {
+    return `El servicio rechazó el token (${result.message ?? "credenciales invalidas"}). Verifica que pegaste el token plano, no su hash SHA-256.`;
+  }
+  if (result.status === 503) {
+    return "El servicio de bots no tiene credenciales configuradas (falta ADMIN_KEY_HASH en el backend).";
+  }
+  return "No se pudo conectar con el servicio de bots. ¿Está corriendo?";
+}
 
 function LoginForm({
   subtle,
@@ -22,8 +34,8 @@ function LoginForm({
     <div className="px-7 py-8">
       <div className="mb-8 flex flex-col items-center">
         <img
-          src="/mc_logo.svg"
-          alt="MineGo"
+          src="/server-icon.png"
+          alt="WatoncitaMC"
           className="h-16 w-16 object-contain mb-4"
         />
         <p
@@ -62,6 +74,8 @@ function LoginForm({
               placeholder="Pega tu token de API"
               required
               autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="none"
               spellCheck="false"
               className={`w-full px-4 py-3 pr-10 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed transition ${input}`}
             />
@@ -147,11 +161,11 @@ function Login() {
     setError(null);
     setIsLoading(true);
     try {
-      const ok = await login(token.trim());
-      if (ok) {
+      const result = await login(token.trim());
+      if (result.ok) {
         navigate("/");
       } else {
-        setError("Token incorrecto o servicio no disponible");
+        setError(buildLoginError(result));
       }
     } catch {
       setError("No se pudo conectar con el servicio de bots");
@@ -186,11 +200,11 @@ function Login() {
         className={`border-b ${divider} px-8 py-5 flex items-center justify-between`}
       >
         <div className="flex items-center gap-3">
-          <img src="/mc_logo.svg" alt="Logo" className="h-7 w-7 object-contain" />
+          <img src="/server-icon.png" alt="Logo" className="h-7 w-7 object-contain" />
           <span
             className={`text-xs font-semibold tracking-wide uppercase ${subtle}`}
           >
-            {APP_NAME} · {MC_SERVER.apiUrl}
+            {APP_NAME}
           </span>
         </div>
         <button

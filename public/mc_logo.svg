@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Cara superior (pasto) -->
+  <polygon points="32,4 60,18 32,32 4,18" fill="#7CB342"/>
+  <polygon points="32,4 60,18 32,32 4,18" fill="none" stroke="#689F38" stroke-width="1"/>
+  <!-- Franja de pasto cara izquierda -->
+  <polygon points="4,18 32,32 32,38 4,24" fill="#689F38"/>
+  <!-- Franja de pasto cara derecha -->
+  <polygon points="60,18 32,32 32,38 60,24" fill="#558B2F"/>
+  <!-- Cara izquierda (tierra) -->
+  <polygon points="4,24 32,38 32,60 4,46" fill="#795548"/>
+  <!-- Cara derecha (tierra) -->
+  <polygon points="60,24 32,38 32,60 60,46" fill="#5D4037"/>
+  <!-- Texturas de tierra -->
+  <polygon points="12,32 16,34 16,42 12,40" fill="#8D6E63" opacity="0.7"/>
+  <polygon points="24,42 28,44 28,52 24,50" fill="#8D6E63" opacity="0.7"/>
+  <polygon points="44,32 48,30 48,40 44,42" fill="#6D4C41" opacity="0.7"/>
+  <polygon points="36,48 40,46 40,54 36,56" fill="#6D4C41" opacity="0.7"/>
+  <!-- Brillo superior -->
+  <polygon points="32,6 55,17.5 32,29 9,17.5" fill="#8BC34A" opacity="0.45"/>
+</svg>

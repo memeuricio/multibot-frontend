@@ -17,22 +17,42 @@ export { MAP_BASE };
 
 const mapaAxios = axios.create({ timeout: 8000 });
 
+// El proxy no configurado suele devolver el index.html del panel (SPA
+// fallback) con status 200. Detectamos ese caso para fallar con un mensaje
+// claro en vez de dejar la UI cargando indefinidamente.
+const PROXY_HINT =
+  "El proxy del mapa no está activo en este entorno: la ruta del mapa devolvió HTML del panel en lugar de JSON. Configura la regla /squaremap en el reverse proxy (ver README).";
+
+function assertMapJson(data) {
+  return data !== null && typeof data === "object";
+}
+
 // { worlds: [{name, display_name, type, order}], ui: {...} }
 export const getMapSettings = async () => {
+  let data;
   try {
-    const { data } = await mapaAxios.get(`${MAP_BASE}/tiles/settings.json`);
-    return data;
+    const res = await mapaAxios.get(`${MAP_BASE}/tiles/settings.json`);
+    data = res.data;
   } catch (err) {
-    throw new Error("No se pudo cargar la configuración del mapa", { cause: err });
+    throw new Error("No se pudo contactar el mapa del servidor", { cause: err });
   }
+  if (!assertMapJson(data) || !Array.isArray(data.worlds)) {
+    throw new Error(PROXY_HINT);
+  }
+  return data;
 };
 
 // { max: <slots>, players: [{ uuid, name, x, y, z, yaw, pitch, health, armor, world }] }
 export const getMapPlayers = async () => {
+  let data;
   try {
-    const { data } = await mapaAxios.get(`${MAP_BASE}/tiles/players.json`);
-    return data;
+    const res = await mapaAxios.get(`${MAP_BASE}/tiles/players.json`);
+    data = res.data;
   } catch (err) {
-    throw new Error("No se pudo cargar la lista de jugadores", { cause: err });
+    throw new Error("No se pudo contactar el mapa del servidor", { cause: err });
   }
+  if (!assertMapJson(data) || !Array.isArray(data.players)) {
+    throw new Error(PROXY_HINT);
+  }
+  return data;
 };

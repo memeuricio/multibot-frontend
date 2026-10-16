@@ -10,12 +10,13 @@ integrar el mapa interactivo del servidor ([squaremap](https://github.com/jpenil
 - **Resumen**: salud del servicio, contadores de bots por estado y jugadores
   conectados al servidor (en vivo).
 - **Bots**: dashboard con polling automático (5 s), filtros, conectar /
-  desconectar / eliminar.
+  desconectar / eliminar, y badge de autenticación (login) por bot.
 - **Crear bot**: validación client-side (host, puerto, username `^[A-Za-z0-9_]{1,16}$`,
-  versión 26.1/26.2, distancia de vista 2-32).
+  versión 26.1/26.2, distancia de vista 2-32) y **contraseña opcional** para
+  el plugin de login del servidor (auto `/login` y `/register`).
 - **Detalle del bot**: telemetría (posición, vida, comida, ping, protocolo,
-  modo de juego), polling adaptativo (2.5 s conectando / 5 s online) y **chat
-  en vivo** (polling cada 2 s).
+  modo de juego), estado de autenticación con avisos de error, polling
+  adaptativo (2.5 s conectando / 5 s online) y **chat en vivo** (polling cada 2 s).
 - **Mapa**: visor squaremap embebido con selector de mundos, lista de jugadores
   en vivo, pantalla completa y apertura en pestaña nueva.
 
@@ -27,6 +28,22 @@ pnpm dev      # desarrollo
 pnpm build    # producción
 pnpm lint     # eslint
 ```
+
+## Login automático de bots (`/login` · `/register`)
+
+Los servidores con plugin de login (AuthMe, nLogin, LibreLogin…) exigen que
+cada jugador se autentique al entrar. Al crear un bot puedes indicar la
+**contraseña del bot** (opcional) y el backend:
+
+1. Detecta el aviso del plugin al entrar al servidor.
+2. Envía `/register <contraseña> <contraseña>` la primera vez (cuenta nueva)
+   o `/login <contraseña>` si ya está registrado.
+3. Corrige solo si el servidor responde lo contrario, y expone el avance en
+   `auth` (`pending`, `login_sent`, `register_sent`, `logged_in`,
+   `not_required`, `timeout`, `error`) — el panel lo muestra como badge.
+
+La contraseña nunca se devuelve por la API: viaja solo al crear el bot y vive
+en memoria del backend. Si no pones contraseña, el bot no intenta login.
 
 ## Variables de entorno (`.env`)
 

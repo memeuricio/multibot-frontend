@@ -24,6 +24,7 @@ import StatCard from "../../UI/StatCard";
 import Boton from "../../UI/Boton";
 import Modal from "../../UI/Modal";
 import EstadoBot from "../../UI/EstadoBot";
+import EstadoAuth from "../../UI/EstadoAuth";
 import Badge from "../../UI/Badge";
 import Icon from "../../components/Icon";
 
@@ -316,6 +317,31 @@ const DetalleBot = () => {
         </div>
       )}
 
+      {/* Error de autenticación del bot */}
+      {bot.auth === "error" && bot.authError && (
+        <div className={`border rounded-lg px-4 py-3 text-sm flex items-start gap-3 ${errorBox}`}>
+          <Icon name="key" size={20} className="shrink-0 mt-0.5" />
+          <div>
+            <p className="font-semibold mb-0.5">Error de autenticación</p>
+            <p>{bot.authError}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Login sin confirmación */}
+      {bot.auth === "timeout" && (
+        <div className={`border rounded-lg px-4 py-3 text-sm flex items-start gap-3 ${warnBox}`}>
+          <Icon name="key" size={20} className="shrink-0 mt-0.5" />
+          <div>
+            <p className="font-semibold mb-0.5">Login sin confirmación</p>
+            <p>
+              El servidor no confirmó la sesión del bot. Revisa el chat o la
+              contraseña configurada.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Conectando */}
       {isConnecting && (
         <div className={`border rounded-lg px-4 py-3 text-sm flex items-center gap-3 ${warnBox}`}>
@@ -362,6 +388,14 @@ const DetalleBot = () => {
                 <span className={t.textSecondary}>Vista (chunks)</span>
                 <span className={t.textPrimary}>{bot.config?.viewDistance ?? "—"}</span>
               </div>
+              {(bot.hasPassword || (bot.auth && bot.auth !== "none")) && (
+                <div className="flex justify-between gap-3 items-center">
+                  <span className={t.textSecondary}>Autenticación</span>
+                  <span title={bot.auth === "error" ? bot.authError : undefined}>
+                    <EstadoAuth auth={bot.auth} />
+                  </span>
+                </div>
+              )}
               <div className="flex justify-between gap-3">
                 <span className={t.textSecondary}>Creado</span>
                 <span className={`text-xs ${t.textPrimary}`}>{formatDateTime(bot.createdAt)}</span>

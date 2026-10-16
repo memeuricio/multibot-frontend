@@ -16,6 +16,7 @@ import Tabla from "../../UI/Tabla";
 import Boton from "../../UI/Boton";
 import Modal from "../../UI/Modal";
 import EstadoBot from "../../UI/EstadoBot";
+import EstadoAuth from "../../UI/EstadoAuth";
 import { FiltroBar, FiltroInput, FiltroSelect } from "../../UI/FiltroBar";
 import Icon from "../../components/Icon";
 
@@ -171,10 +172,15 @@ const Bots = () => {
       case "estado":
         return (
           <div
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 flex-wrap"
             title={row.error ?? undefined}
           >
             <EstadoBot status={row.status} />
+            {row.status === "online" && row.hasPassword && (
+              <span title={row.auth === "error" ? row.authError : undefined}>
+                <EstadoAuth auth={row.auth} short />
+              </span>
+            )}
             {row.status === "online" && (
               <span className={`text-xs ${t.textSecondary}`}>{formatPing(row.latency)}</span>
             )}

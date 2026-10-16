@@ -21,6 +21,7 @@ const INITIAL_FORM = {
   host: "",
   port: 25565,
   username: "",
+  password: "",
   version: "26.2",
   viewDistance: 8,
 };
@@ -60,6 +61,14 @@ const CrearBot = () => {
     if (!Number.isInteger(vd) || vd < 2 || vd > 32)
       next.viewDistance = "Distancia de vista entre 2 y 32";
 
+    // Opcional: contraseña del plugin de login del servidor
+    if (form.password) {
+      if (/\s/.test(form.password))
+        next.password = "La contraseña no puede contener espacios";
+      else if (form.password.length > 64)
+        next.password = "Máximo 64 caracteres";
+    }
+
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -75,6 +84,7 @@ const CrearBot = () => {
         host: form.host.trim(),
         port: Number(form.port),
         username: form.username.trim(),
+        ...(form.password ? { password: form.password } : {}),
         version: form.version,
         viewDistance: Number(form.viewDistance),
       });
@@ -222,6 +232,33 @@ const CrearBot = () => {
                 Menor valor = menos RAM usada por el bot
               </p>
             </div>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className={labelClass} htmlFor="password">
+              Contraseña del bot (opcional)
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              placeholder="Contraseña usada con /login"
+              autoComplete="new-password"
+              spellCheck="false"
+              className={inputClass("password")}
+            />
+            {errors.password && (
+              <p className="text-xs text-red-500">{errors.password}</p>
+            )}
+            <p className={`text-[10px] ${t.textMuted}`}>
+              Si el servidor usa un plugin de login (AuthMe y similares), el bot
+              se autentica solo con <span className="font-mono">/login</span> y,
+              la primera vez que entra, se registra con{" "}
+              <span className="font-mono">/register</span>. Recomendado: 5 a 30
+              caracteres, sin espacios. Déjalo vacío si el servidor no pide login.
+            </p>
           </div>
 
           {/* Ayudas */}
